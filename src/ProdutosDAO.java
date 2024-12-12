@@ -4,19 +4,16 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-
 public class ProdutosDAO {
-    
-   conectaDAO connect = new conectaDAO();
-   Connection conn = connect.conectar();
+
+    conectaDAO connect = new conectaDAO();
+    Connection conn = connect.conectar();
     PreparedStatement st;
     ResultSet rs;
 
- 
-  
-    public Integer saveItem(ProdutosDTO produto) {
+    public Integer cadastrarProduto(ProdutosDTO produto) {
         int status = 0;
-   
+
         try {
 
             st = conn.prepareStatement("INSERT INTO produtos values(?,?,?,?)");
@@ -24,35 +21,39 @@ public class ProdutosDAO {
             st.setString(2, produto.getNome());
             st.setString(3, produto.getValor().toString());
             st.setString(4, produto.getStatus());
-            
+
             status = st.executeUpdate();
             st.close();
             return status;
         } catch (Exception ex) {
             System.out.println("Erro ao conetar" + ex.getMessage());
-           return status;
+            return status;
         }
-        
-        
 
     }
-    
-    
-    
-    public ArrayList<ProdutosDTO> listarProdutos(){
-        
-        return listagem;
-    }
-    
-    
-    
-      public void desconectar(){
+
+    public ArrayList<ProdutosDTO> listarProdutos() {
+        ArrayList<ProdutosDTO> produtos = new ArrayList<>();
+
         try {
-            conn.close();
-        } catch (SQLException ex) {
-            //posso deixar vazio para evitar uma mensagem de erro desnecessária ao usuário
+            st = conn.prepareStatement("SELECT * from produtos");
+            rs = st.executeQuery();
+
+            while (rs.next()) {
+                ProdutosDTO produto = new ProdutosDTO();
+
+                produto.setId(rs.getInt("id"));
+                produto.setNome(rs.getString("nome"));
+                produto.setValor(rs.getInt("valor"));
+                produto.setStatus(rs.getString("status"));
+
+                produtos.add(produto);
+
+            }
+            return produtos;
+        } catch (Exception ex) {
+            return null;
+
         }
     }
-        
 }
-
