@@ -1,34 +1,43 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
-/**
- *
- * @author Adm
- */
 
 import java.sql.PreparedStatement;
 import java.sql.Connection;
-import javax.swing.JOptionPane;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
 
 public class ProdutosDAO {
     
-    Connection conn;
-    PreparedStatement prep;
-    ResultSet resultset;
-    ArrayList<ProdutosDTO> listagem = new ArrayList<>();
-    
-    public void cadastrarProduto (ProdutosDTO produto){
+   conectaDAO connect = new conectaDAO();
+   Connection conn = connect.conectar();
+    PreparedStatement st;
+    ResultSet rs;
+
+ 
+  
+    public Integer saveItem(ProdutosDTO produto) {
+        int status = 0;
+   
+        try {
+
+            st = conn.prepareStatement("INSERT INTO produtos values(?,?,?,?)");
+            st.setString(1, null);
+            st.setString(2, produto.getNome());
+            st.setString(3, produto.getValor().toString());
+            st.setString(4, produto.getStatus());
+            
+            status = st.executeUpdate();
+            st.close();
+            return status;
+        } catch (Exception ex) {
+            System.out.println("Erro ao conetar" + ex.getMessage());
+           return status;
+        }
         
         
-        //conn = new conectaDAO().connectDB();
-        
-        
+
     }
+    
+    
     
     public ArrayList<ProdutosDTO> listarProdutos(){
         
@@ -37,6 +46,13 @@ public class ProdutosDAO {
     
     
     
+      public void desconectar(){
+        try {
+            conn.close();
+        } catch (SQLException ex) {
+            //posso deixar vazio para evitar uma mensagem de erro desnecessária ao usuário
+        }
+    }
         
 }
 
