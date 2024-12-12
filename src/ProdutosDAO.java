@@ -11,8 +11,8 @@ public class ProdutosDAO {
     PreparedStatement st;
     ResultSet rs;
 
-    public Integer cadastrarProduto(ProdutosDTO produto) {
-        int status = 0;
+    public boolean cadastrarProduto(ProdutosDTO produto) {
+     boolean save = true;
 
         try {
 
@@ -22,12 +22,12 @@ public class ProdutosDAO {
             st.setString(3, produto.getValor().toString());
             st.setString(4, produto.getStatus());
 
-            status = st.executeUpdate();
+            st.executeUpdate();
             st.close();
-            return status;
+            return save;
         } catch (Exception ex) {
             System.out.println("Erro ao conetar" + ex.getMessage());
-            return status;
+            return save = false;
         }
 
     }
