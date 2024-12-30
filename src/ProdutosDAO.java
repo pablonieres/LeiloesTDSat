@@ -56,4 +56,45 @@ public class ProdutosDAO {
 
         }
     }
+
+    public boolean venderProduto(int id)
+    {
+        try {
+            st = conn.prepareStatement("UPDATE  produtos SET status=? where id=?");
+            st.setString(1, "Vendido");
+            st.setInt(2, id);
+            st.executeUpdate();
+            return  true;
+            
+        } catch (Exception ex) {
+            return false;
+
+        }
+    }
+
+ public ArrayList<ProdutosDTO> listarProdutosVendidos() {
+        ArrayList<ProdutosDTO> produtosVendidos = new ArrayList<>();
+
+        try {
+            st = conn.prepareStatement("SELECT * from produtos where status = 'Vendido'");
+            rs = st.executeQuery();
+
+            while (rs.next()) {
+                ProdutosDTO produto = new ProdutosDTO();
+
+                produto.setId(rs.getInt("id"));
+                produto.setNome(rs.getString("nome"));
+                produto.setValor(rs.getInt("valor"));
+                produto.setStatus(rs.getString("status"));
+
+                produtosVendidos.add(produto);
+
+            }
+            return produtosVendidos;
+        } catch (Exception ex) {
+            return null;
+
+        }
+    }
+   
 }
