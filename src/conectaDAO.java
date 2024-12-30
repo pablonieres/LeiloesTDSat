@@ -8,8 +8,8 @@ public class conectaDAO {
     
     public Connection conn;
     public String url = "jdbc:mysql://localhost:3306/uc11"; //Nome da base de dados
-    public String user = "pablo"; //nome do usuário do MySQL
-    public String password = "081275"; //senha do MySQL
+    public String user = ""; //nome do usuário do MySQL
+    public String password = ""; //senha do MySQL
     
     
     public Connection conectar(){
