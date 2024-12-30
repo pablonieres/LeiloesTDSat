@@ -57,12 +57,12 @@ public class ProdutosDAO {
         }
     }
 
-    public String venderProduto(ProdutosDTO produto)
+    public String venderProduto(int id)
     {
         try {
             st = conn.prepareStatement("UPDATE status from produtos SET=? where id=?");
             st.setString(1, "Vendido");
-            st.setInt(2, produto.getId());
+            st.setInt(2, id);
             rs = st.executeQuery();
             return  "Vendido";
             
